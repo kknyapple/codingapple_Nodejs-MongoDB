@@ -1,6 +1,9 @@
 const express = require("express");
 const app = express();
 
+//body-parser
+app.use(express.urlencoded({ extended: true }));
+
 app.listen(8080, function () {
   console.log("listening on 8080");
 });
@@ -19,4 +22,16 @@ app.get("/beauty", function (req, res) {
 //__dirname은 현재 파일 경로를 뜻함
 app.get("/", function (req, res) {
   res.sendFile(__dirname + "/index.html");
+});
+
+app.get("/write", function (req, res) {
+  res.sendFile(__dirname + "/write.html");
+});
+
+//post요청
+//url은 html에 있음 //action="/add" method="POST"
+//req에 input에 적은 정보 저장됨(body-parser 필요)
+app.post("/add", function (req, res) {
+  res.send("전송완료");
+  console.log(req.body);
 });
