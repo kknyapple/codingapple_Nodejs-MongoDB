@@ -14,3 +14,9 @@ app.get("/pet", function (req, res) {
 app.get("/beauty", function (req, res) {
   res.send("뷰티용품 소개 페이지입니다");
 });
+
+//sendFile() 함수는 파일을 보낼 수 있음
+//__dirname은 현재 파일 경로를 뜻함
+app.get("/", function (req, res) {
+  res.sendFile(__dirname + "/index.html");
+});
