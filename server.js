@@ -4,9 +4,18 @@ const app = express();
 //body-parser
 app.use(express.urlencoded({ extended: true }));
 
-app.listen(8080, function () {
-  console.log("listening on 8080");
-});
+const MongoClient = require("mongodb").MongoClient;
+
+MongoClient.connect(
+  "mongodb+srv://mongo:mongo123@cluster0.cxma51e.mongodb.net/?retryWrites=true&w=majority",
+  function (에러, client) {
+    if (에러) return console.log(에러);
+    //서버띄우는 코드 여기로 옮기기
+    app.listen("8080", function () {
+      console.log("listening on 8080");
+    });
+  }
+);
 
 //누군가가 /pet으로 방문을 하면...
 //pet관련된 안내문을 띄워주자
