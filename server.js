@@ -58,5 +58,12 @@ app.get("/write", function (req, res) {
 //list로 get요청으로 접속하면 실제 db 데이터가 있는 html 보여줌
 //ejs를 보여주려면 views폴더 안에 있어야함
 app.get("/list", function (req, res) {
-  res.render("list.ejs");
+  //db에 저장된 post라는 collection안의 데이터를 꺼내기
+  //모든 데이터 찾기 -> find().toArray()
+  db.collection("post")
+    .find()
+    .toArray(function (err, result) {
+      console.log(result);
+      res.render("list.ejs", { posts: result });
+    });
 });
