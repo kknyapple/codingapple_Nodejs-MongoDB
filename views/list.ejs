@@ -7,17 +7,9 @@
     <title>Document</title>
   </head>
   <body>
-    <h5>1. 반목문으로 출력</h5>
     <% for (let i =0; i < posts.length; i++){ %>
     <h2>할 일 제목 : <%= posts[i].제목%></h2>
     <p>할 일 마감날짜 : <%= posts[i].날짜%></p>
     <% } %>
-
-    <br />
-    <h5>2. 일반 출력</h5>
-    <h2>할 일 제목 : <%= posts[0].제목%></h2>
-    <p>할 일 마감날짜 : <%= posts[0].날짜%></p>
-    <h2>할 일 제목 : <%= posts[1].제목%></h2>
-    <p>할 일 마감날짜 : <%= posts[1].날짜%></p>
   </body>
 </html>

@@ -25,10 +25,19 @@ MongoClient.connect(
     // write로 가서 submit하면 db에 저장됨
     app.post("/add", function (req, res) {
       res.send("전송완료");
-      db.collection("post").insertOne(
-        { 제목: req.body.title, 날짜: req.body.date },
-        function () {
-          console.log("저장완료");
+
+      //데이터를 하나만 찾고 싶을 때 -> findOne()
+      db.collection("counter").findOne(
+        { name: "number of posts" },
+        function (err, result) {
+          let totalPost = result.totalPost;
+
+          db.collection("post").insertOne(
+            { 제목: req.body.title, 날짜: req.body.date },
+            function () {
+              console.log("저장완료");
+            }
+          );
         }
       );
     });
