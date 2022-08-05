@@ -33,9 +33,18 @@ MongoClient.connect(
           let totalPost = result.totalPost;
 
           db.collection("post").insertOne(
-            { 제목: req.body.title, 날짜: req.body.date },
+            { _id: totalPost, 제목: req.body.title, 날짜: req.body.date },
             function () {
               console.log("저장완료");
+
+              //counter에서 totalPost 1증가
+              //데이터 수정하기 -> updateOne(), updateMany()
+              //$set -> 변경 operator, $inc -> 증가 operator...
+              db.collection("counter").updateOne(
+                //totalPost는 계속 바뀌므로 {name}을 수정해준다
+                { name: "number of posts" },
+                { $inc: { totalPost: 1 } }
+              );
             }
           );
         }
