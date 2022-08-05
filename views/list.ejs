@@ -7,9 +7,47 @@
     <title>Document</title>
   </head>
   <body>
-    <% for (let i =0; i < posts.length; i++){ %>
-    <h2>할 일 제목 : <%= posts[i].제목%></h2>
-    <p>할 일 마감날짜 : <%= posts[i].날짜%></p>
-    <% } %>
+    <h1>서버에서 가져온 할 일 목록</h1>
+    <ul>
+      <% for (let i = 0; i < posts.length; i++){ %>
+      <li>
+        <h2>할 일 제목 : <%= posts[i].제목%></h2>
+        <p>할 일 마감날짜 : <%= posts[i].날짜%></p>
+        <button class="delete" data-id="<%= posts[i]._id %>">삭제</button>
+      </li>
+      <% } %>
+    </ul>
   </body>
 </html>
+
+<script>
+  //반복문으로 post가 있으므로 querySelectorAll
+  const deleteButton = document.querySelectorAll(".delete");
+
+  //querySelectorAll이므로 반목문으로
+  for (let i = 0; i < deleteButton.length; i++) {
+    deleteButton[i].addEventListener("click", deleteHandler);
+  }
+
+  function deleteHandler(e) {
+    e.preventDefault();
+
+    //버튼요소.dataset.id는 data-id를 가져올 수 있다
+    let id = parseInt(e.target.dataset.id);
+
+    fetch("/delete", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        _id: id,
+      }),
+    })
+      .then(function (res) {})
+      .then(function (data) {})
+      .catch(function (err) {
+        console.log(err);
+      });
+  }
+</script>

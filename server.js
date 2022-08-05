@@ -1,6 +1,9 @@
 const express = require("express");
 const app = express();
 
+//fetch() 이용하려고
+app.use(express.json()); //X
+
 //body-parser
 app.use(express.urlencoded({ extended: true }));
 
@@ -84,4 +87,11 @@ app.get("/list", function (req, res) {
       console.log(result);
       res.render("list.ejs", { posts: result });
     });
+});
+
+app.delete("/delete", function (req, res) {
+  db.collection("post").deleteOne(req.body, function (err, result) {
+    console.log("삭제완료");
+  });
+  res.send("삭제완료");
 });
