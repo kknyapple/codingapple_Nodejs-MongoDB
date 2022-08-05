@@ -5,6 +5,7 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 
 const MongoClient = require("mongodb").MongoClient;
+app.set("view engine", "ejs");
 
 let db;
 
@@ -14,13 +15,6 @@ MongoClient.connect(
     if (err) return console.log(err);
 
     db = client.db("todoapp");
-
-    db.collection("post").insertOne(
-      { 이름: "John", 나이: 20, _id: 2 },
-      function (에러, 결과) {
-        console.log("저장완료");
-      }
-    );
 
     //서버띄우는 코드 여기로 옮기기
     app.listen("8080", function () {
@@ -32,7 +26,7 @@ MongoClient.connect(
     app.post("/add", function (req, res) {
       res.send("전송완료");
       db.collection("post").insertOne(
-        { _id: 1, 제목: req.body.title, 날짜: req.body.date },
+        { 제목: req.body.title, 날짜: req.body.date },
         function () {
           console.log("저장완료");
         }
@@ -61,11 +55,8 @@ app.get("/write", function (req, res) {
   res.sendFile(__dirname + "/write.html");
 });
 
-//post요청
-//url은 html에 있음 //action="/add" method="POST"
-//req에 input에 적은 정보 저장됨(body-parser 필요)
-// app.post("/add", function (req, res) {
-//   res.send("전송완료");
-//   console.log(req.body.data);
-//   console.log(req.body.title);
-// });
+//list로 get요청으로 접속하면 실제 db 데이터가 있는 html 보여줌
+//ejs를 보여주려면 views폴더 안에 있어야함
+app.get("/list", function (req, res) {
+  res.render("list.ejs");
+});
