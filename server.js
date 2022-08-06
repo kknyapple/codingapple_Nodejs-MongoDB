@@ -95,3 +95,12 @@ app.delete("/delete", function (req, res) {
   });
   res.send("삭제완료");
 });
+
+app.get("/detail/:id", function (req, res) {
+  db.collection("post").findOne(
+    { _id: parseInt(req.params.id) },
+    function (err, result) {
+      res.render("detail.ejs", { data: result });
+    }
+  );
+});
