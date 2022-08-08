@@ -4,6 +4,10 @@ const app = express();
 //fetch() 이용하려고
 app.use(express.json()); //X
 
+//put요청
+const methodOverride = require("method-override");
+app.use(methodOverride("_method"));
+
 //body-parser
 app.use(express.urlencoded({ extended: true }));
 
@@ -101,6 +105,29 @@ app.get("/detail/:id", function (req, res) {
     { _id: parseInt(req.params.id) },
     function (err, result) {
       res.render("detail.ejs", { data: result });
+    }
+  );
+});
+
+app.get("/edit/:id", function (req, res) {
+  db.collection("post").findOne(
+    { _id: parseInt(req.params.id) },
+    function (err, result) {
+      res.render("edit.ejs", { post: result });
+    }
+  );
+});
+
+//updateOne -> (업데이트 할 내용, 수정 내용, 콜백함수)
+app.put("/edit", function (req, res) {
+  db.collection("post").updateOne(
+    { _id: parseInt(req.body.id) },
+    { $set: { 제목: req.body.title, 날짜: req.body.date } },
+    function () {
+      console.log("수정완료");
+
+      //성공실패 상관없이 응답 list로 이동
+      res.redirect("/list");
     }
   );
 });
