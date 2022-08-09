@@ -146,6 +146,7 @@ app.use(passport.session());
 app.get("/login", function (req, res) {
   res.render("login.ejs");
 });
+
 app.post(
   "/login",
   passport.authenticate("local", {
@@ -155,6 +156,21 @@ app.post(
     res.redirect("/");
   }
 );
+
+app.get("/mypage", isLogin, function (req, res) {
+  console.log(req.user);
+  res.render("mypage.ejs", { user: req.user });
+});
+
+//미들웨어
+//로그인 후 세션이 있으면 req.user가 항상 있음
+function isLogin(req, res, next) {
+  if (req.user) {
+    next();
+  } else {
+    res.send("로그인 해주세요");
+  }
+}
 
 //id, pw 검사 코드(복붙)
 //pw가 암호화 X -> 보안 X (해시...)
@@ -194,6 +210,9 @@ passport.serializeUser(function (user, done) {
 });
 
 //이 세션 데이터를 가진 사람을 db에서 찾아줌(마이페이지 접속시 발동)
+//세션 아이디로 개인정보를 db에서 찾아줌
 passport.deserializeUser(function (id, done) {
-  done(null, {});
+  db.collection("login").findOne({ id: id }, function (err, result) {
+    done(null, result);
+  });
 });
